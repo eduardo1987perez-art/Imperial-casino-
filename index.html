@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperial Casino - Registro</title>
+    <style>
+        :root { --dorado: #c5a059; --cyan: #00f2ff; }
+        body {
+            margin: 0; background: #000; color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            padding: 20px 0;
+        }
+        .bg-blur {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('zeus.png') no-repeat center center;
+            background-size: cover; filter: blur(10px) brightness(0.2); z-index: -1;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px; border-radius: 15px; border: 1px solid var(--dorado);
+            width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,1);
+        }
+        .tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid #333; }
+        .tab { flex: 1; padding: 12px; cursor: pointer; color: #666; font-weight: bold; transition: 0.3s; }
+        .tab.active { color: var(--dorado); border-bottom: 2px solid var(--dorado); }
+        
+        form { display: none; }
+        form.active { display: block; max-height: 70vh; overflow-y: auto; padding-right: 5px; }
+        
+        /* Personalización de scroll para el registro largo */
+        form::-webkit-scrollbar { width: 4px; }
+        form::-webkit-scrollbar-thumb { background: var(--dorado); border-radius: 10px; }
+
+        input, select {
+            width: 100%; padding: 12px; margin: 6px 0;
+            background: rgba(255,255,255,0.07); border: 1px solid #333;
+            color: #fff; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;
+        }
+        input:focus { border-color: var(--dorado); }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .btn-gold {
+            width: 100%; padding: 15px; margin-top: 20px;
+            background: linear-gradient(to bottom, #f7dfa4, var(--dorado));
+            border: none; color: #000; font-weight: 900;
+            border-radius: 6px; cursor: pointer; text-transform: uppercase;
+        }
+        .error-msg { color: #ff4b2b; font-size: 11px; margin-top: 5px; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blur"></div>
+
+    <div class="container">
+        <h2 style="color:var(--dorado); letter-spacing:4px; margin-top:0;">IMPERIAL</h2>
+        
+        <div class="tabs">
+            <div class="tab active" id="tab-login" onclick="showForm('login')">ENTRAR</div>
+            <div class="tab" id="tab-register" onclick="showForm('register')">REGISTRO</div>
+        </div>
+
+        <form id="form-login" class="active">
+            <input type="text" id="login-id" placeholder="Usuario o Correo">
+            <input type="password" id="login-pass" placeholder="Contraseña">
+            <div id="error-login" class="error-msg">⚠️ Datos incorrectos</div>
+            <button type="button" class="btn-gold" onclick="procesarLogin()">ENTRAR AL OLIMPO</button>
+        </form>
+
+        <form id="form-register">
+            <input type="text" id="reg-nombre" placeholder="Nombre(s)">
+            <div class="grid">
+                <input type="text" id="reg-paterno" placeholder="Ap. Paterno">
+                <input type="text" id="reg-materno" placeholder="Ap. Materno">
+            </div>
+            <input type="text" onfocus="(this.type='date')" id="reg-fecha" placeholder="Fecha de Nacimiento">
+            
+            <div style="text-align:left; font-size:12px; color:var(--dorado); margin:10px 0 5px 5px;">DIRECCIÓN</div>
+            <input type="text" id="reg-calle" placeholder="Calle y Número">
+            <div class="grid">
+                <input type="text" id="reg-colonia" placeholder="Colonia">
+                <input type="text" id="reg-cp" placeholder="C.P.">
+            </div>
+            <input type="text" id="reg-pais" placeholder="País" value="México">
+            
+            <div style="text-align:left; font-size:12px; color:var(--dorado); margin:10px 0 5px 5px;">CUENTA</div>
+            <input type="email" id="reg-email" placeholder="Correo Electrónico">
+            <input type="text" id="reg-user" placeholder="Nombre de Usuario">
+            <input type="password" id="reg-pass1" placeholder="Contraseña">
+            <input type="password" id="reg-pass2" placeholder="Repetir Contraseña">
+            
+            <div id="error-reg" class="error-msg">⚠️ Las contraseñas no coinciden</div>
+            <button type="button" class="btn-gold" onclick="procesarRegistro()">FINALIZAR REGISTRO</button>
+        </form>
+    </div>
+
+    <script>
+        function showForm(tipo) {
+            document.getElementById('form-login').classList.remove('active');
+            document.getElementById('form-register').classList.remove('active');
+            document.getElementById('tab-login').classList.remove('active');
+            document.getElementById('tab-register').classList.remove('active');
+            if(tipo === 'login') {
+                document.getElementById('form-login').classList.add('active');
+                document.getElementById('tab-login').classList.add('active');
+            } else {
+                document.getElementById('form-register').classList.add('active');
+                document.getElementById('tab-register').classList.add('active');
+            }
+        }
+
+        function procesarRegistro() {
+            const pass1 = document.getElementById('reg-pass1').value;
+            const pass2 = document.getElementById('reg-pass2').value;
+            const user = document.getElementById('reg-user').value.toLowerCase().trim();
+            const email = document.getElementById('reg-email').value.toLowerCase().trim();
+
+            if (pass1 !== pass2) {
+                document.getElementById('error-reg').style.display = 'block';
+                return;
+            }
+
+            if (user && pass1 && email) {
+                // Guardamos datos básicos para el login dual
+                localStorage.setItem('db_user', user);
+                localStorage.setItem('db_email', email);
+                localStorage.setItem('db_pass', pass1);
+                
+                alert("✅ ¡Registro completado con éxito!");
+                showForm('login');
+            } else {
+                alert("❌ Por favor llena los campos obligatorios.");
+            }
+        }
+
+        function procesarLogin() {
+            const inputID = document.getElementById('login-id').value.toLowerCase().trim();
+            const inputPass = document.getElementById('login-pass').value.trim();
+            
+            const storedUser = localStorage.getItem('db_user') || "admin";
+            const storedEmail = localStorage.getItem('db_email') || "admin@casino.com";
+            const storedPass = localStorage.getItem('db_pass') || "1234";
+
+            // Login Dual: Checa contra usuario O contra correo
+            if ((inputID === storedUser || inputID === storedEmail) && inputPass === storedPass) {
+                localStorage.setItem('sesion_activa', 'true');
+                window.location.href = "menu.html";
+            } else {
+                document.getElementById('error-login').style.display = 'block';
+            }
+        }
+
+        window.onload = () => {
+            if (localStorage.getItem('sesion_activa') === 'true') {
+                window.location.href = "menu.html";
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Imperial Casino - Aviator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="mySidebar" class="sidebar-game">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times; Volver</a>
+        <a href="menu.html">Menú Principal</a>
+        <a href="https://wa.me/528616108755" target="_blank">Soporte VIP</a>
+        <a href="index.html">Cerrar Sesión</a>
+    </div>
+
+    <div class="header">
+        <button class="open-btn" onclick="openNav()">&#9776;</button>
+        <div class="logo">IMPERIAL</div>
+        <div class="wallet">
+            <span id="user-balance">$100.00</span>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="history-bar" id="history"></div>
+        <canvas id="line-canvas"></canvas>
+        <div id="mult-display">1.00x</div>
+        <div id="plane-wrapper">
+            <svg viewBox="0 0 64 64" id="plane-svg">
+                <path d="M62,28H48.4L33.6,5.6c-0.7-1-1.8-1.6-3-1.6c-2.2,0-4,1.8-4,4v18l-12.4-1c-1.1-0.1-2.2,0.5-2.7,1.5L5.7,38H2c-1.1,0-2,0.9-2,2s0.9,2,2,2h5.2c1.1,0,2.2-0.6,2.7-1.6l3-5.3l11,0.9V56c0,2.2,1.8,4,4,4c1.2,0,2.3-0.6,3-1.6l14.8-22.4H62c1.1,0,2-0.9,2-2S63.1,28,62,28z" fill="#00d1ff"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="controls-area">
+        <div class="bet-box">
+            <div class="input-row">
+                <span class="label">APUESTA</span>
+                <input type="number" id="bet-amount" value="10.00">
+            </div>
+            <button class="btn-main btn-green" id="main-btn" onclick="handleInteraction()">APOSTAR</button>
+        </div>
+        <div class="bet-box">
+            <div class="input-row">
+                <span class="label">AUTO COBRO</span>
+                <input type="number" id="auto-cash-val" value="2.00">
+            </div>
+            <button class="btn-main btn-gray" id="auto-btn" onclick="toggleAuto()">AUTO: OFF</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
+        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+    </script>
+</body>
+</html>
