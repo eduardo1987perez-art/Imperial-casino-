@@ -1,0 +1,272 @@
+/* =========================================
+   ESTILOS IMPERIAL CASINO - COMPLETO
+   ========================================= */
+
+:root {
+    --dorado: #c5a059;
+    --dorado-brillante: #ffd700;
+    --azul-neon: #00d1ff;
+    --rojo-neon: #ff4b2b;
+    --negro-fondo: #0a0a0a;
+}
+
+body {
+    margin: 0;
+    background: #000;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- SIDEBAR (MENÚ LATERAL) --- */
+.sidebar-game, .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    background-color: #0a0a0a;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    border-right: 1px solid var(--dorado);
+}
+
+.sidebar-game a, .sidebar a {
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 18px;
+    color: var(--dorado);
+    display: block;
+    border-bottom: 1px solid #1a1a1a;
+    font-family: serif;
+}
+
+.sidebar-game a:hover, .sidebar a:hover {
+    background: #1a1a1a;
+    color: white;
+}
+
+.closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px !important;
+}
+
+/* --- CABECERA (HEADER) --- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #1a1a1a;
+    border-bottom: 2px solid #333;
+    z-index: 100;
+}
+
+.open-btn {
+    background: transparent;
+    border: none;
+    color: var(--dorado);
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #fff, var(--dorado));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.wallet {
+    background: #0b0b0b;
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid var(--dorado);
+}
+
+#user-balance {
+    color: #00ff41;
+    font-weight: bold;
+}
+
+/* --- ÁREA DE JUEGO (AVIATOR) --- */
+.game-container {
+    flex: 1;
+    position: relative;
+    background: radial-gradient(circle, #1a1a1a, #000);
+    overflow: hidden;
+    transition: box-shadow 0.4s ease; /* Para el brillo dorado */
+}
+
+#line-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#mult-display {
+    position: absolute;
+    font-size: 60px;
+    font-weight: 900;
+    z-index: 20;
+    text-shadow: 0 0 20px rgba(0,209,255,0.7);
+    pointer-events: none;
+}
+
+#plane-wrapper {
+    position: absolute;
+    width: 80px;
+    z-index: 30;
+    filter: drop-shadow(0 0 10px var(--azul-neon));
+    pointer-events: none;
+}
+
+/* --- HISTORIAL --- */
+.history-bar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 35px;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    z-index: 40;
+    overflow-x: auto;
+}
+
+.hist-item {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #222;
+}
+
+/* --- CONTROLES DE APUESTA --- */
+.controls-area {
+    background: #141516;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    border-top: 1px solid #333;
+}
+
+.bet-box {
+    background: #1c1d1e;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #333;
+}
+
+.input-row {
+    background: #000;
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-size: 10px;
+    color: #888;
+}
+
+input[type="number"] {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    text-align: right;
+    width: 70px;
+    outline: none;
+    font-size: 16px;
+}
+
+.btn-main {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-green {
+    background: linear-gradient(#4caf50, #2e7d32);
+    box-shadow: 0 4px #1e7e34;
+}
+
+.btn-red {
+    background: linear-gradient(#f44336, #b71c1c);
+    box-shadow: 0 4px #7f0000;
+}
+
+.btn-gray {
+    background: #333;
+    color: #777;
+}
+
+.btn-gray.active {
+    background: var(--azul-neon);
+    color: #000;
+    box-shadow: 0 4px #008eb0;
+}
+
+/* --- ESTILOS DE FORMULARIOS (INDEX.HTML) --- */
+.auth-container {
+    width: 90%;
+    max-width: 450px;
+    border: 1px solid var(--dorado);
+    padding: 30px;
+    background: #0a0a0a;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.grid-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.full-w {
+    grid-column: span 2;
+}
+
+.btn-gold {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(to bottom, var(--dorado), #8e7037);
+    border: none;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    text-transform: uppercase;
+}
+
+/* --- RESPONSIVO --- */
+@media (max-width: 480px) {
+    #mult-display { font-size: 40px; }
+    .controls-area { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Imperial - Dueño</title>
+    <style>
+        body { background: #121212; color: white; font-family: sans-serif; padding: 20px; }
+        .card { background: #1e1e1e; padding: 20px; border-radius: 15px; border-left: 5px solid #ff0000; margin-bottom: 20px; }
+        h2 { color: #ff0000; margin-top: 0; }
+        label { display: block; margin: 10px 0 5px; color: #888; font-size: 14px; }
+        input[type="range"] { width: 100%; accent-color: #ff0000; }
+        input[type="number"] { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .stat-box { background: #000; padding: 15px; border-radius: 10px; text-align: center; }
+        .stat-box span { display: block; font-size: 20px; font-weight: bold; color: #28a745; }
+        .save-btn { width: 100%; background: #ff0000; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>ADMINISTRACIÓN IMPERIAL</h2>
+
+    <div class="stats">
+        <div class="stat-box">Saldo Casa<span>$1,450.00</span></div>
+        <div class="stat-box">Jugadores<span>3</span></div>
+    </div>
+
+    <div class="card">
+        <h3>Ajustes de Ganancia</h3>
+        
+        <label>RTP (Retorno al Jugador): <span id="rtp-val">95</span>%</label>
+        <input type="range" id="rtp-range" min="50" max="98" value="95" oninput="updateVal('rtp-val', this.value)">
+        <p style="font-size: 10px; color: #666;">(95% significa que el casino gana el 5% de cada apuesta a largo plazo)</p>
+
+        <label>Explosión Instantánea (1.00x): <span id="edge-val">3</span>%</label>
+        <input type="range" id="edge-range" min="1" max="20" value="3" oninput="updateVal('edge-val', this.value)">
+    </div>
+
+    <button class="save-btn" onclick="saveSettings()">APLICAR CAMBIOS</button>
+
+    <script>
+        function updateVal(id, val) {
+            document.getElementById(id).innerText = val;
+        }
+
+        function saveSettings() {
+            const settings = {
+                rtp: document.getElementById('rtp-range').value,
+                edge: document.getElementById('edge-range').value
+            };
+            // Guardamos en la memoria del navegador (por ahora)
+            localStorage.setItem('casinoSettings', JSON.stringify(settings));
+            alert("¡Configuración actualizada en el servidor!");
+        }
+    </script>
+</body>
+</html>
