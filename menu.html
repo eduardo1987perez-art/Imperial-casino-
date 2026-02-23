@@ -4,125 +4,112 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Imperial Casino - Lobby</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --dorado: #c5a059;
-            --cyan-glow: #00f2ff;
-        }
-
+        :root { --dorado: #c5a059; --cyan-glow: #00f2ff; }
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            /* SE AJUSTA PARA QUE ZEUS SE VEA COMPLETO */
-            background-image: url('zeus.png');
-            background-size: contain;
-            background-position: center 20%;
-            background-repeat: no-repeat;
-            color: white;
+            margin: 0; padding: 0; background-color: #000; color: white;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+            background-image: url('zeus.png'); background-size: contain;
+            background-position: center 20%; background-repeat: no-repeat;
         }
 
         /* HEADER */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: rgba(0, 0, 0, 0.85); z-index: 100;
+            border-bottom: 1px solid var(--dorado);
         }
+        .mini-wallet { border: 2px solid var(--cyan-glow); color: var(--cyan-glow); padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 14px; box-shadow: 0 0 10px var(--cyan-glow); }
 
-        .mini-wallet {
-            border: 2px solid var(--cyan-glow);
-            color: var(--cyan-glow);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 14px;
-            box-shadow: 0 0 10px var(--cyan-glow);
-        }
-
-        /* SIDEBAR (MENÚ LATERAL) */
+        /* SIDEBAR */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 1000;
             top: 0; left: 0; background-color: #0a0a0a;
             overflow-x: hidden; transition: 0.5s; padding-top: 60px;
             border-right: 1px solid var(--dorado);
         }
-        .sidebar a { padding: 15px 25px; text-decoration: none; font-size: 18px; color: var(--dorado); display: block; border-bottom: 1px solid #1a1a1a; }
+        .sidebar a { padding: 15px 25px; text-decoration: none; font-size: 18px; color: var(--dorado); display: block; border-bottom: 1px solid #1a1a1a; cursor: pointer; }
+        .fav-item-link { background: #151515; font-size: 14px !important; padding-left: 45px !important; color: #fff !important; }
 
-        /* AVIATOR FLOTANTE (SIN RECUADRO) */
-        .main-container {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 80px;
+        /* PERFIL MODAL */
+        #perfil-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 2000; padding: 20px; box-sizing: border-box;
+            overflow-y: auto;
         }
+        .perfil-container { max-width: 500px; margin: 0 auto; padding-bottom: 80px; }
+        .dato-item { padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.2); position: relative; }
+        .dato-cat { color: var(--dorado); font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
+        
+        .input-perfil { background: transparent; border: none; color: #fff; font-size: 16px; width: 90%; outline: none; font-family: inherit; }
+        .editable { border-bottom: 1px dashed rgba(197, 160, 89, 0.4); }
+        .bloqueado { color: #888 !important; cursor: not-allowed; }
+        .emoji-status { position: absolute; right: 0; bottom: 15px; font-size: 14px; }
 
-        .game-launcher {
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        /* BOTONERA FINAL */
+        .btn-group { display: flex; gap: 10px; margin-top: 30px; }
+        .btn-perfil { flex: 1; padding: 15px; border: none; font-weight: 900; border-radius: 5px; cursor: pointer; text-transform: uppercase; }
+        .btn-save { background-color: #28a745; color: white; }
+        .btn-cancel { background-color: #dc3545; color: white; }
 
-        .plane-svg {
-            width: 100px;
-            filter: drop-shadow(0 0 15px #ff4b2b);
-            margin-bottom: 10px;
-            animation: bounce 2s infinite ease-in-out;
-        }
-
+        /* AVIATOR */
+        .main-container { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 60px; z-index: 5; }
+        .game-wrapper { position: relative; text-align: center; }
+        .fav-star { position: absolute; top: -35px; right: -25px; font-size: 30px; color: rgba(255,255,255,0.2); cursor: pointer; }
+        .fav-star.active { color: #ffcc00; text-shadow: 0 0 15px #ffcc00; }
+        .plane-svg { width: 85px; filter: drop-shadow(0 0 15px #ff4b2b); animation: bounce 2s infinite ease-in-out; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .aviator-text { color: #fff; font-size: 40px; font-weight: 900; font-style: italic; margin: 0; }
 
-        .aviator-text {
-            color: #FFFFFF; font-size: 45px; font-weight: 900;
-            font-style: italic; margin: 0; text-shadow: 2px 2px 10px #000;
-        }
-
-        /* FOOTER CERTIFICADOS */
-        footer { background: #000; padding: 20px 10px; text-align: center; }
-        .badge-row { display: flex; justify-content: center; gap: 8px; margin: 10px 0; }
-        .badge { border: 1px solid #444; padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; }
+        footer { background: rgba(0,0,0,0.95); padding: 15px 10px; text-align: center; border-top: 1px solid #222; }
+        .badge-container { display: flex; justify-content: center; gap: 10px; margin-top: 5px; }
+        .badge { border: 1px solid #444; padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; }
     </style>
 </head>
 <body>
 
+    <div id="perfil-modal">
+        <div style="text-align: right;"><i class="fas fa-times" onclick="closePerfil()" style="font-size: 30px; color: var(--dorado); cursor:pointer;"></i></div>
+        <div class="perfil-container" id="perfil-render"></div>
+    </div>
+
     <div id="mySidebar" class="sidebar">
-        <a href="javascript:void(0)" onclick="closeNav()" style="font-size:30px; text-align:right; display:block; padding-right:20px;">&times;</a>
-        <a href="menu.html">🏠 Inicio</a>
+        <a onclick="closeNav()" style="text-align:right; font-size:30px;">&times;</a>
+        <a onclick="closeNav()">🏠 Inicio</a>
+        <a onclick="openPerfil()">👤 Mi Perfil</a>
+        <div id="favs-section">
+            <a style="background: #111;"><i class="fas fa-star" style="color:#ffcc00;"></i> FAVORITOS</a>
+            <div id="favs-list-container"></div>
+        </div>
         <a href="https://wa.me/528616108755">💬 Soporte VIP</a>
-        <a href="#" onclick="cerrarSesion()">🚪 Cerrar Sesión</a>
+        <a onclick="cerrarSesion()">🚪 Cerrar Sesión</a>
     </div>
 
     <header class="header">
         <div style="font-size: 28px; cursor: pointer; color: var(--dorado);" onclick="openNav()">&#9776;</div>
-        <div style="color:var(--dorado); font-weight:bold; letter-spacing:2px;">IMPERIAL CASINO</div>
-        <div class="mini-wallet" id="mini-balance">$83.07</div>
+        <div style="color:var(--dorado); font-weight:bold; letter-spacing:1px;">IMPERIAL CASINO</div>
+        <div class="mini-wallet" id="wallet-balance">$83.07</div>
     </header>
 
     <div class="main-container">
-        <a href="aviator.html" class="game-launcher">
-            <svg class="plane-svg" viewBox="0 0 64 64" fill="#ff4b2b">
-                <path d="M62,28H48.4L33.6,5.6c-0.7-1-1.8-1.6-3-1.6c-2.2,0-4,1.8-4,4v18l-12.4-1c-1.1-0.1-2.2,0.5-2.7,1.5L5.7,38H2c-1.1,0-2,0.9-2,2s0.9,2,2,2h5.2c1.1,0,2.2-0.6,2.7-1.6l3-5.3l11,0.9V56c0,2.2,1.8,4,4,4c1.2,0,2.3-0.6,3-1.6l14.8-22.4H62c1.1,0,2-0.9,2-2S63.1,28,62,28z"/>
-            </svg>
-            <h1 class="aviator-text">AVIATOR</h1>
-            <span style="color:var(--dorado); font-weight:bold; letter-spacing:2px; font-size:12px;">TAP PARA JUGAR</span>
-        </a>
+        <div class="game-wrapper">
+            <i class="fas fa-star fav-star" id="star-aviator" onclick="toggleFav('aviator', 'AVIATOR', 'aviator.html')"></i>
+            <a href="aviator.html" style="text-decoration:none; display:flex; flex-direction:column; align-items:center;">
+                <svg class="plane-svg" viewBox="0 0 64 64" fill="#ff4b2b"><path d="M62,28H48.4L33.6,5.6c-0.7-1-1.8-1.6-3-1.6c-2.2,0-4,1.8-4,4v18l-12.4-1c-1.1-0.1-2.2,0.5-2.7,1.5L5.7,38H2c-1.1,0-2,0.9-2,2s0.9,2,2,2h5.2c1.1,0,2.2-0.6,2.7-1.6l3-5.3l11,0.9V56c0,2.2,1.8,4,4,4c1.2,0,2.3-0.6,3-1.6l14.8-22.4H62c1.1,0,2-0.9,2-2S63.1,28,62,28z"/></svg>
+                <h1 class="aviator-text">AVIATOR</h1>
+                <span style="color:var(--dorado); font-size:10px; font-weight:bold;">TAP PARA JUGAR</span>
+            </a>
+        </div>
     </div>
 
     <footer>
-        <div style="color:#fff; font-size:10px; font-weight:bold; margin-bottom:10px;">🔒 CONEXIÓN SEGURA Y ENCRIPTADA</div>
-        <div class="badge-row">
-            <div class="badge" style="border-color:#00ff41; color:#00ff41;">🛡️ CONDUCEF</div>
-            <div class="badge" style="border-color:var(--dorado); color:var(--dorado);">⚖️ SEGOB</div>
-            <div class="badge" style="border-color:#00d1ff; color:#00d1ff;">💎 GLI</div>
+        <div style="color:#fff; font-size:10px; font-weight:bold;">🔒 CONEXIÓN SEGURA Y AUDITADA SEGOB</div>
+        <div class="badge-container">
+            <span class="badge" style="color:#00ff41; border-color:#00ff41;">CONDUSEF</span>
+            <span class="badge" style="color:var(--dorado); border-color:var(--dorado);">SEGOB</span>
+            <span class="badge" style="color:#00d1ff; border-color:#00d1ff;">GLI</span>
         </div>
     </footer>
 
@@ -130,18 +117,75 @@
         function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
-        function cerrarSesion() {
-            localStorage.removeItem('sesion_activa');
-            window.location.href = "index.html";
+        function openPerfil() {
+            closeNav();
+            const get = (k) => localStorage.getItem(k) || "";
+            document.getElementById('perfil-render').innerHTML = `
+                <h1 style="color:var(--dorado); font-size:26px; margin-bottom:20px;">MI PERFIL</h1>
+                
+                <div class="dato-item"><div class="dato-cat">Nombre(s)</div><input type="text" id="p_nombre" class="input-perfil editable" value="${get('t_nombre')}"><span class="emoji-status">📝</span></div>
+                <div class="dato-item"><div class="dato-cat">Apellido Paterno</div><input type="text" id="p_paterno" class="input-perfil editable" value="${get('t_ap_paterno')}"><span class="emoji-status">📝</span></div>
+                <div class="dato-item"><div class="dato-cat">Apellido Materno</div><input type="text" id="p_materno" class="input-perfil editable" value="${get('t_ap_materno')}"><span class="emoji-status">📝</span></div>
+                <div class="dato-item"><div class="dato-cat">Fecha de Nacimiento</div><input type="text" id="p_nac" class="input-perfil editable" value="${get('t_nacimiento')}"><span class="emoji-status">📝</span></div>
+                
+                <div class="dato-item"><div class="dato-cat">Calle y Número</div><input type="text" id="p_calle" class="input-perfil editable" value="${get('t_calle_num')}"><span class="emoji-status">📝</span></div>
+                <div class="dato-item"><div class="dato-cat">Colonia</div><input type="text" id="p_colonia" class="input-perfil editable" value="${get('t_colonia')}"><span class="emoji-status">📝</span></div>
+                <div class="dato-item"><div class="dato-cat">Ciudad</div><input type="text" id="p_ciudad" class="input-perfil editable" value="${get('t_ciudad')}"><span class="emoji-status">📝</span></div>
+                <div class="dato-item"><div class="dato-cat">Estado</div><input type="text" id="p_estado" class="input-perfil editable" value="${get('t_estado')}"><span class="emoji-status">📝</span></div>
+
+                <div class="dato-item"><div class="dato-cat">Teléfono</div><input type="text" class="input-perfil bloqueado" value="${get('t_telefono')}" readonly><span class="emoji-status">🔒</span></div>
+                <div class="dato-item"><div class="dato-cat">Usuario</div><input type="text" class="input-perfil bloqueado" value="${get('db_user')}" readonly><span class="emoji-status">🔒</span></div>
+                <div class="dato-item"><div class="dato-cat">Correo Electrónico</div><input type="text" class="input-perfil bloqueado" value="${get('t_email')}" readonly><span class="emoji-status">🔒</span></div>
+                <div class="dato-item" style="border:none;"><div class="dato-cat">Contraseña</div><input type="password" class="input-perfil bloqueado" value="********" readonly><span class="emoji-status">🔒</span></div>
+
+                <div class="btn-group">
+                    <button class="btn-perfil btn-cancel" onclick="closePerfil()">Cancelar</button>
+                    <button class="btn-perfil btn-save" onclick="saveAllData()">Guardar</button>
+                </div>
+            `;
+            document.getElementById('perfil-modal').style.display = 'block';
         }
 
+        function saveAllData() {
+            localStorage.setItem('t_nombre', document.getElementById('p_nombre').value);
+            localStorage.setItem('t_ap_paterno', document.getElementById('p_paterno').value);
+            localStorage.setItem('t_ap_materno', document.getElementById('p_materno').value);
+            localStorage.setItem('t_nacimiento', document.getElementById('p_nac').value);
+            localStorage.setItem('t_calle_num', document.getElementById('p_calle').value);
+            localStorage.setItem('t_colonia', document.getElementById('p_colonia').value);
+            localStorage.setItem('t_ciudad', document.getElementById('p_ciudad').value);
+            localStorage.setItem('t_estado', document.getElementById('p_estado').value);
+            
+            alert("¡Cambios guardados con éxito!");
+            closePerfil();
+        }
+
+        function closePerfil() { document.getElementById('perfil-modal').style.display = 'none'; }
+
+        function toggleFav(id, nombre, url) {
+            let f = JSON.parse(localStorage.getItem('imperial_favs')) || [];
+            const i = f.findIndex(x => x.id === id);
+            if(i > -1) { f.splice(i, 1); if(document.getElementById('star-'+id)) document.getElementById('star-'+id).classList.remove('active'); }
+            else { f.push({id, nombre, url}); if(document.getElementById('star-'+id)) document.getElementById('star-'+id).classList.add('active'); }
+            localStorage.setItem('imperial_favs', JSON.stringify(f));
+            renderFavs();
+        }
+
+        function renderFavs() {
+            const f = JSON.parse(localStorage.getItem('imperial_favs')) || [];
+            const c = document.getElementById('favs-list-container');
+            if(!c) return;
+            c.innerHTML = f.length ? "" : '<a style="font-size:12px; color:#444; padding-left:45px;">Vacío</a>';
+            f.forEach(x => { const a = document.createElement('a'); a.className='fav-item-link'; a.href=x.url; a.innerText=`• ${x.nombre}`; c.appendChild(a); });
+        }
+
+        function cerrarSesion() { localStorage.removeItem('sesion_activa'); window.location.href = "index.html"; }
+
         window.onload = () => {
-            // SI INTENTA ENTRAR SIN LOGUEARSE, LO SACA
-            if (localStorage.getItem('sesion_activa') !== 'true') {
-                window.location.href = "index.html";
-            }
-            const bal = localStorage.getItem('imperial_balance') || "83.07";
-            document.getElementById('mini-balance').innerText = "$" + bal;
+            renderFavs();
+            const f = JSON.parse(localStorage.getItem('imperial_favs')) || [];
+            f.forEach(x => { if(document.getElementById('star-'+x.id)) document.getElementById('star-'+x.id).classList.add('active'); });
+            document.getElementById('wallet-balance').innerText = "$" + (localStorage.getItem('imperial_balance') || "83.07");
         };
     </script>
 </body>
